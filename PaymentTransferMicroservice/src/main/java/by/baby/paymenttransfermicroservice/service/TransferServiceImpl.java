@@ -3,19 +3,25 @@ package by.baby.paymenttransfermicroservice.service;
 import by.baby.event.CreatedDepositEvent;
 import by.baby.event.CreatedWithdrawalEvent;
 import by.baby.event.PaymentEvent;
+import by.baby.exception.NonRetryableException;
+import by.baby.exception.RetryableException;
+import by.baby.paymenttransfermicroservice.config.KafkaConfiguration;
 import by.baby.paymenttransfermicroservice.dto.TransferDto;
 import by.baby.paymenttransfermicroservice.persistance.entity.PaymentTransferEntity;
 import by.baby.paymenttransfermicroservice.repository.PaymentTransferRepository;
+import by.baby.util.constants.KafkaConfigurationConstants;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 @Transactional
