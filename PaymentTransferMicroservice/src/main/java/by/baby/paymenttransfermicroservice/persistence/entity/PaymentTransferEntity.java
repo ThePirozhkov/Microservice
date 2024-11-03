@@ -1,4 +1,4 @@
-package by.baby.paymenttransfermicroservice.persistance.entity;
+package by.baby.paymenttransfermicroservice.persistence.entity;
 
 import jakarta.persistence.*;
 

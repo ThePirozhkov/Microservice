@@ -1,4 +1,4 @@
-package by.baby.persistence.entity;
+package by.baby.withdrawalmicroservice.persistence.entity;
 
 import jakarta.persistence.*;
 

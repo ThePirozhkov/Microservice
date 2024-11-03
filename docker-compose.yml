@@ -4,6 +4,29 @@ volumes:
   postgres_volume:
     name: postgres_volume
 services:
+  mock_web_service:
+    image: thepirozhkov/transfer-mock-web-service
+    container_name: mock_web_service
+    hostname: mockwebservice
+    ports:
+      - '8080:8080'
+  payment_transfer_microservice:
+    image: thepirozhkov/transfer-payment-microservice
+    container_name: payment_transfer_microservice
+    ports:
+      - '9099:9099'
+  deposit_microservice3:
+    image: thepirozhkov/transfer-deposit-microservice
+    container_name: deposit_microservice3
+  deposit_microservice2:
+    image: thepirozhkov/transfer-deposit-microservice
+    container_name: deposit_microservice2
+  deposit_microservice:
+    image: thepirozhkov/transfer-deposit-microservice
+    container_name: deposit_microservice
+  withdrawal_microservice:
+    image: thepirozhkov/transfer-withdrawal-microservice
+    container_name: withdrawal_microservice
   postgres:
     hostname: postgres
     image: postgres:13.1-alpine

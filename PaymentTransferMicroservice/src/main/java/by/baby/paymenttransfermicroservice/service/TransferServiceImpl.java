@@ -1,31 +1,31 @@
 package by.baby.paymenttransfermicroservice.service;
 
+import by.baby.dto.TransferResponse;
 import by.baby.event.CreatedDepositEvent;
 import by.baby.event.CreatedWithdrawalEvent;
 import by.baby.event.PaymentEvent;
-import by.baby.exception.NonRetryableException;
-import by.baby.exception.RetryableException;
-import by.baby.paymenttransfermicroservice.config.KafkaConfiguration;
 import by.baby.paymenttransfermicroservice.dto.TransferDto;
-import by.baby.paymenttransfermicroservice.persistance.entity.PaymentTransferEntity;
+import by.baby.paymenttransfermicroservice.persistence.entity.PaymentTransferEntity;
 import by.baby.paymenttransfermicroservice.repository.PaymentTransferRepository;
-import by.baby.util.constants.KafkaConfigurationConstants;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
 @Service
-@Transactional
+@Transactional(propagation = Propagation.REQUIRES_NEW)
 public class TransferServiceImpl implements TransferService {
+
+    @Value("${custom.mock.web.service}")
+    private String customMockWebServiceUrl;
 
     private final PaymentTransferRepository paymentTransferRepository;
 
@@ -43,7 +43,8 @@ public class TransferServiceImpl implements TransferService {
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
     @Override
-    public String transfer(TransferDto transferDto)  {
+    public TransferResponse transfer(TransferDto transferDto)  {
+        TransferResponse transferResponse;
         try {
             LOGGER.info("Transfer started with data: {}", transferDto);
             CreatedDepositEvent depositEvent = new CreatedDepositEvent(
@@ -81,7 +82,8 @@ public class TransferServiceImpl implements TransferService {
                         }
                     });
 
-            restTemplate.exchange("http://localhost:8080/mock", HttpMethod.POST, null, String.class);
+            restTemplate.exchange(String.format("http://%s/mock", customMockWebServiceUrl),
+                    HttpMethod.POST, null, String.class);
 
             paymentKafkaTemplate.send(withdrawalRecord)
                             .whenComplete((result, error) -> {
@@ -98,15 +100,22 @@ public class TransferServiceImpl implements TransferService {
                     depositMessageId
             );
 
+            transferResponse = new TransferResponse(depositMessageId, withdrawalMessageId);
+
             paymentTransferRepository.save(paymentTransferEntity);
         } catch (Exception e) {
             LOGGER.error("Transfer service | Exception : {}", e.getMessage());
             throw e;
         }
-        String result = String.format("Successfully transfer from %s to %s ($%s)",
-                transferDto.getSenderId(), transferDto.getReceiverId(), transferDto.getAmount());
-        LOGGER.info(result);
-        return result;
+
+        if (transferResponse == null) {
+            LOGGER.error("Transfer response is null!");
+            throw new NullPointerException("Transfer response is null!");
+        } else {
+            LOGGER.info("Transfer response processed successfully! TransferResponse: {}", transferResponse);
+        }
+
+        return transferResponse;
     }
 
 }
