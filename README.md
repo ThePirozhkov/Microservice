@@ -17,7 +17,7 @@
 
 -->UserMicroservice<--
 Установка:
-Для начала работы запустите UserMicroserviceApplication, в docker-compose включить контейнеры с Redis и Postgres
+Для начала работы запустите UserMicroserviceApplication АКТИВНЫЙ ПРОФИЛЬ "dev", в docker-compose включить контейнеры с Redis и Postgres
 
 Все запросы отправлять на http://localhost:8080/api/users
 
