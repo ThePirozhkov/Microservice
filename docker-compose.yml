@@ -1,4 +1,6 @@
 volumes:
+  redis_volume:
+    name: redis_volume
   kafka_volume:
     name: kafka_volume
   postgres_volume:
@@ -39,6 +41,31 @@ services:
       - PGDATA=/var/postgresql/data/pgdata
     volumes:
       - postgres_volume:/var/postgresql/data/pgdata
+  redis:
+    image: redis:latest
+    container_name: redis_container
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_volume:/data
+    environment:
+      - REDIS_DATABASES=1
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+    healthcheck:
+      test: [ "CMD", "redis-cli", "-a", "ping" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    restart: unless-stopped
+    tty: true
+    stdin_open: true
   pgadmin:
     hostname: pgadmin
     image: sovchinn/pgadmin

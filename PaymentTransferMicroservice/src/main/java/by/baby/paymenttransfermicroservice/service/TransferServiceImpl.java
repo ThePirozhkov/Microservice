@@ -108,12 +108,7 @@ public class TransferServiceImpl implements TransferService {
             throw e;
         }
 
-        if (transferResponse == null) {
-            LOGGER.error("Transfer response is null!");
-            throw new NullPointerException("Transfer response is null!");
-        } else {
-            LOGGER.info("Transfer response processed successfully! TransferResponse: {}", transferResponse);
-        }
+        LOGGER.info("Transfer response processed successfully! TransferResponse: {}", transferResponse);
 
         return transferResponse;
     }
