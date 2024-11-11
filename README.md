@@ -30,3 +30,12 @@
 }
 
 Данный модуль используется для демонстрации работы с базами данных Postgres/Redis и кэширования
+
+-->pgAdmin<--
+Подключаться через http://localhost:5050
+
+host: postgres
+port: 5432
+
+user: postgres
+password: admin
