@@ -4,7 +4,7 @@
 Установка:
 Для начала работы запустите файл docker-compose.yml и все основные контейнеры запустятся
 
-Все запросы отправлять на http://localhost:9099
+Все запросы отправлять на http://localhost:9099/transfer
 
 Форма запроса JSON:
 {
@@ -19,7 +19,7 @@
 Установка:
 Для начала работы запустите UserMicroserviceApplication, в docker-compose включить контейнеры с Redis и Postgres
 
-Все запросы отправлять на http://localhost:8080
+Все запросы отправлять на http://localhost:8080/api/users
 
 Форма запроса JSON:
 {
