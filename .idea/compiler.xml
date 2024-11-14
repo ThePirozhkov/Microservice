@@ -9,6 +9,7 @@
         <module name="EurekaServer" />
         <module name="DepositMicroservice" />
         <module name="WithdrawalMicroservice" />
+        <module name="Gateway" />
         <module name="UserMicroservice" />
         <module name="MockWebService" />
         <module name="PaymentTransferMicroservice" />
@@ -21,6 +22,7 @@
       <module name="Core" options="-parameters" />
       <module name="DepositMicroservice" options="-parameters" />
       <module name="EurekaServer" options="-parameters" />
+      <module name="Gateway" options="-parameters" />
       <module name="MockWebService" options="-parameters" />
       <module name="PaymentTransferMicroservice" options="-parameters" />
       <module name="UserMicroservice" options="-parameters" />
