@@ -1,41 +1,26 @@
-Пэт-проект: Работа с микросервисами
+# Пэт-проект: Работа с микросервисами
 
--->Transfer Microservices<--
-Установка:
-Для начала работы запустите файл docker-compose.yml и все основные контейнеры запустятся
-
-Все запросы отправлять на http://localhost:9099/transfer
-
-Форма запроса JSON:
-{
-    "senderId": "любое ID",
-    "receiverId": "любое ID",
-    "amount": любое кол-во
-}
-
-Данный пэт-проект используется для демонстрации работы микросервисов и их взаимодействии, а также для демонстрации работы с Docker и контейнеризации
-
--->UserMicroservice<--
-Установка:
-Для начала работы запустите UserMicroserviceApplication АКТИВНЫЙ ПРОФИЛЬ "dev", в docker-compose включить контейнеры с Redis и Postgres
-
-Все запросы отправлять на http://localhost:8080/api/users
-
-Форма запроса JSON:
-{
-    "verified": false,
-    "email": "уникальный любой email",
-    "password": "любой пароль",
-    "login": "уникальный любой логин"
-}
-
-Данный модуль используется для демонстрации работы с базами данных Postgres/Redis и кэширования
-
--->pgAdmin<--
-Подключаться через http://localhost:5050
-
-host: postgres
-port: 5432
-
-user: postgres
-password: admin
+<h2>Описание проекта</h2>
+<h3>Проект состоит из нескольких модулей:</h3>
+<li><b>Core</b></li>
+<p>Содержит java-файлы, репозитории, DTO и т.д., используемые в нескольких модулях.</p>
+<li><b>DepositMicroservice</b></li>
+<p>Модуль отвечающий за "депозит средств" в проекте.</p>
+<li><b>MockWebService</b></li>
+<p>Модуль делающий вид, что что-то обрабатывает на удаленном сервисе.</p>
+<li><b></b>PaymentTransferMicroservice</li>
+<p>Модуль отправляющий Deposit, Withdrawal эвенты на Kafka сервер</p>
+<li><b>WithdrawalMicroservice</b></li>
+<p>Модуль отвечающий за "списание средств" в проекте.</p>
+<li><b>EurekaServer</b></li>
+<p>Модуль содержащий в себе Eureka Server, регистрирующий микросервисы.</p>
+<li><b>Gateway</b></li>
+<p>Гейтвей для отправки на него запросов.</p>
+<li><b>UserMicroservice</b></li>
+<p>Отдельный от всех модуль, который умеет кэшировать запросы, используется для получения пользователей из БД.</p>
+<h2>Интеграция в Spring Cloud</h2>
+<p>Микросервисы PaymentTransferMiroservice и UserMicroservice связаны с помощью EurekaServer.</p>
+<p>Все запросы отправляются на единый URL:</p>
+`<p>http://localhost:8888</p>`
+<p>Для PaymentTransferMicroservice на URL:</p>
+`<p>http://localhost:8888/transfer</p>`
