@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/Core/pom.xml" />
+        <option value="$PROJECT_DIR$/MockWebService/pom.xml" />
+        <option value="$PROJECT_DIR$/OtherMicroservices/UserMicroservice/pom.xml" />
+        <option value="$PROJECT_DIR$/DepositMicroservice/pom.xml" />
+        <option value="$PROJECT_DIR$/WithdrawalMicroservice/pom.xml" />
+        <option value="$PROJECT_DIR$/PaymentTransferMicroservice/pom.xml" />
+        <option value="$PROJECT_DIR$/EurekaServer/pom.xml" />
+        <option value="$PROJECT_DIR$/Gateway/pom.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_X" default="true" project-jdk-name="openjdk-23" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+</project>
