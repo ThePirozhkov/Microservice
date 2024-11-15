@@ -26,7 +26,8 @@ public class TransferController {
     private final TransferService transferService;
 
     @PostMapping
-    public String transfer(@RequestBody TransferDto transferDto) throws ExecutionException, InterruptedException, TimeoutException {
+    public String transfer(@RequestBody TransferDto transferDto)
+            throws ExecutionException, InterruptedException, TimeoutException {
 
         TransferResponse transferResponse = transferService.transfer(transferDto);
         boolean result;
@@ -36,7 +37,6 @@ public class TransferController {
         } else {
             result = verifyService.verify(transferResponse);
         }
-
 
         if (!result) {
             return "Operation failed";

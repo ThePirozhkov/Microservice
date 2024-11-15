@@ -4,9 +4,12 @@ import by.baby.dto.TransferResponse;
 import by.baby.event.CreatedDepositEvent;
 import by.baby.event.CreatedWithdrawalEvent;
 import by.baby.event.PaymentEvent;
+import by.baby.exception.NonRetryableException;
+import by.baby.exception.RetryableException;
 import by.baby.paymenttransfermicroservice.dto.TransferDto;
 import by.baby.paymenttransfermicroservice.persistence.entity.PaymentTransferEntity;
 import by.baby.paymenttransfermicroservice.repository.PaymentTransferRepository;
+import by.baby.util.constants.KafkaConfigurationConstants;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -105,7 +108,11 @@ public class TransferServiceImpl implements TransferService {
             paymentTransferRepository.save(paymentTransferEntity);
         } catch (Exception e) {
             LOGGER.error("Transfer service | Exception : {}", e.getMessage());
-            throw e;
+            if (KafkaConfigurationConstants.getRetryableExceptions().contains(e.getClass())) {
+                throw new RetryableException(e);
+            } else {
+                throw new NonRetryableException(e);
+            }
         }
 
         LOGGER.info("Transfer response processed successfully! TransferResponse: {}", transferResponse);
